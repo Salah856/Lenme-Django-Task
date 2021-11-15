@@ -34,6 +34,7 @@ class Loan(models.Model):
             max_length=100,
             default=LOAN_STATUS[0][0]
         )
+    annual_interest_rate = models.FloatField(default=0.15)
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE)
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE)
 
