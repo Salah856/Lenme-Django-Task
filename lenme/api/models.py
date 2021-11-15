@@ -35,6 +35,10 @@ class Loan(models.Model):
             default=LOAN_STATUS[0][0]
         )
     annual_interest_rate = models.FloatField(default=0.15)
+    lenme_fee = models.FloatField(default=3.0)
+    # 3 dollars fee
+    # to be added to loan amount
+
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE)
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE)
 
