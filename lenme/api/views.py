@@ -3,9 +3,6 @@ from .models import Investor, Loan, Borrower
 from django.http import JsonResponse
 
 
-# Create your views here.
-
-
 def request_loan(request):
     if request.method == 'POST':
         loan_amount = request.POST.get('loan_amount')
@@ -39,8 +36,6 @@ def request_loan(request):
         return JsonResponse(status=201, data={'message': 'Loan request sent'})
 
 
-
-
 def submit_loan_offer(request):
     if request.method == 'POST':
         investor_id = request.POST.get('investor_id')
@@ -61,4 +56,31 @@ def submit_loan_offer(request):
         data = {'message': 'Loan offer submitted'}
         return JsonResponse(status=200, data=data)
 
+
+def accept_loan(request):
+    if request.method == 'POST':
+        loan_id = request.POST.get('loan_id')
+        loan = Loan.objects.get(pk=loan_id)
+        is_valid_balance = check_investor_balance(loan.investor_id, loan)
+
+        all_filled = all([loan_id])
+        if not is_valid_balance:
+            data = {'message': 'Insufficient balance'}
+            return JsonResponse(data=data, status=401)
+
+        if not all_filled:
+            return JsonResponse(data={'message': 'fields missing'}, status=401)
+
+        loan = Loan.objects.get(pk=loan_id)
+
+        loan.loan_status = 'Completed'
+        loan.save()
+
+        data = {'message': 'Loan accepted'}
+        return JsonResponse(status=200, data=data)
+
+
+def check_investor_balance(investor_id, loan):
+    investor = Investor.objects.get(pk=investor_id)
+    return investor.balance > loan.loan_amount + loan.lenme_fee
 
