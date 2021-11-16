@@ -5,6 +5,7 @@ from datetime import datetime as dt, timedelta
 
 LOAN_STATUS = (
     ('Requested', 'Requested'),
+    ('Offered', 'Offered'),
     ('Funded', 'Funded'),
     ('Completed', 'Completed'),
 )

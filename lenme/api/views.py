@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Investor, Loan, Borrower
 from django.http import JsonResponse
 
@@ -50,7 +49,7 @@ def submit_loan_offer(request):
         loan = Loan.objects.get(pk=loan_id)
 
         loan.annual_interest_rate = annual_interest_rate
-        loan.loan_status = 'Funded'
+        loan.loan_status = 'Offered'
         loan.save()
 
         data = {'message': 'Loan offer submitted'}
@@ -73,7 +72,7 @@ def accept_loan(request):
 
         loan = Loan.objects.get(pk=loan_id)
 
-        loan.loan_status = 'Completed'
+        loan.loan_status = 'Funded'
         loan.save()
 
         data = {'message': 'Loan accepted'}
