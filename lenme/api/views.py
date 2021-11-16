@@ -1,5 +1,6 @@
 from .models import Investor, Loan, Borrower
 from django.http import JsonResponse
+from .utils import check_investor_balance
 
 
 def request_loan(request):
@@ -77,9 +78,4 @@ def accept_loan(request):
 
         data = {'message': 'Loan accepted'}
         return JsonResponse(status=200, data=data)
-
-
-def check_investor_balance(investor_id, loan):
-    investor = Investor.objects.get(pk=investor_id)
-    return investor.balance > loan.loan_amount + loan.lenme_fee
 
