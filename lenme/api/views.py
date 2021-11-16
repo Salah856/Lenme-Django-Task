@@ -91,8 +91,30 @@ def complete_loan(request):
 
         loan = Loan.objects.get(pk=loan_id)
 
+        if loan.loan_status != 'Paid':
+            data = {'message': 'Loan not funded'}
+            return JsonResponse(data=data, status=401)
+
         loan.loan_status = 'Completed'
         loan.save()
 
         data = {'message': 'Loan completed'}
+        return JsonResponse(status=200, data=data)
+
+
+def payback_loan(request):
+    if request.method == 'POST':
+        loan_id = request.POST.get('loan_id')
+        loan = Loan.objects.get(pk=loan_id)
+
+        all_filled = all([loan_id])
+        if not all_filled:
+            return JsonResponse(data={'message': 'fields missing'}, status=401)
+
+        loan = Loan.objects.get(pk=loan_id)
+
+        loan.loan_status = 'Paid'
+        loan.save()
+
+        data = {'message': 'Loan paid back'}
         return JsonResponse(status=200, data=data)

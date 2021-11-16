@@ -7,6 +7,7 @@ LOAN_STATUS = (
     ('Requested', 'Requested'),
     ('Offered', 'Offered'),
     ('Funded', 'Funded'),
+    ('Paid', 'Paid'),
     ('Completed', 'Completed'),
 )
 
