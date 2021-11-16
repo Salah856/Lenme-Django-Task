@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import request_loan, submit_loan_offer, accept_loan, complete_loan
+from .views import (
+    request_loan,
+    submit_loan_offer,
+    accept_loan,
+    complete_loan,
+    payback_loan
+)
 
 
 urlpatterns = [
@@ -7,4 +13,5 @@ urlpatterns = [
     path('submit_loan_offer/', submit_loan_offer, name='submit_loan_offer'),
     path('accept_loan/', accept_loan, name='accept_loan'),
     path('complete_loan/', complete_loan, name='complete_loan'),
+    path('payback_loan/', payback_loan, name='payback_loan'),
 ]
