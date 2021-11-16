@@ -18,14 +18,14 @@ def request_loan(request):
         all_filled = all(
             [loan_amount, lenme_fee, loan_period, investor_id, borrower_id]
         )
-
+        borrower = Borrower.objects.get(pk=borrower_id)
         if not all_filled:
             return JsonResponse(status=401, data={'message': 'fields missing'})
 
         loan = Loan(
             loan_amount=loan_amount,
             lenme_fee=lenme_fee,
-            borrower_id=borrower_id,
+            borrower=borrower,
             investor_id=investor_id,
             loan_period=loan_period,
             loan_status='Requested'
@@ -79,3 +79,20 @@ def accept_loan(request):
         data = {'message': 'Loan accepted'}
         return JsonResponse(status=200, data=data)
 
+
+def complete_loan(request):
+    if request.method == 'POST':
+        loan_id = request.POST.get('loan_id')
+        loan = Loan.objects.get(pk=loan_id)
+
+        all_filled = all([loan_id])
+        if not all_filled:
+            return JsonResponse(data={'message': 'fields missing'}, status=401)
+
+        loan = Loan.objects.get(pk=loan_id)
+
+        loan.loan_status = 'Completed'
+        loan.save()
+
+        data = {'message': 'Loan completed'}
+        return JsonResponse(status=200, data=data)
